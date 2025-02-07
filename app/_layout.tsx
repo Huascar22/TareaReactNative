@@ -1,39 +1,30 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator } from "@react-navigation/stack"
+import HomePage from "./(tabs)/index"
+import SumadoraPage from "./(tabs)/SumadoraPage"
+import TraductorPage from "./(tabs)/TraductorPage"
+import TablaMultiplicarPage from "./(tabs)/TablaMultiplicarPage"
+import ExperienciaPage from "./(tabs)/ExperienciaPage"
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const Stack = createStackNavigator()
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
+const App = () => {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomePage} options={{ title: "Página Inicial" }} />
+        <Stack.Screen name="Sumadora" component={SumadoraPage} />
+        <Stack.Screen name="Traductor" component={TraductorPage} />
+        <Stack.Screen
+          name="TablaMultiplicar"
+          component={TablaMultiplicarPage}
+          options={{ title: "Tabla de Multiplicar" }}
+        />
+        <Stack.Screen name="Experiencia" component={ExperienciaPage} options={{ title: "Experiencia Personal" }} />
+      </Stack.Navigator>
+
+  )
 }
+
+export default App
+
